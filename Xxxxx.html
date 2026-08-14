@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>🚀 إرسال سريع Gmail</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Tahoma', 'Arial', sans-serif;
+            background: #0b0e14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+        .card {
+            background: #1a202c;
+            padding: 30px 25px;
+            border-radius: 28px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #2d3748;
+        }
+        h2 {
+            color: #63b3ed;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        h2 span {
+            background: #2d3748;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #a0aec0;
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        .input-group label {
+            display: block;
+            color: #a0aec0;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #0d1117;
+            border: 1px solid #2d3748;
+            border-radius: 14px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.2);
+        }
+        .input-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 14px rgba(66, 153, 225, 0.4);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn:active {
+            transform: scale(0.96);
+            box-shadow: 0 2px 8px rgba(66, 153, 225, 0.2);
+        }
+        .note {
+            margin-top: 20px;
+            color: #718096;
+            font-size: 0.75rem;
+            text-align: center;
+            border-top: 1px solid #2d3748;
+            padding-top: 15px;
+        }
+        .note strong {
+            color: #f6ad55;
+        }
+        /* تنبيه صغير */
+        .toast-msg {
+            background: #2d3748;
+            color: #fbd38d;
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            border-right: 4px solid #f6ad55;
+            display: none;
+        }
+        .toast-msg.show {
+            display: block;
+        }
+        .icon-small {
+            font-size: 1.4rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>
+            ✉️ الإرسال السريع
+            <span>Gmail</span>
+        </h2>
+
+        <form id="emailForm">
+            <div class="input-group">
+                <label>📧 البريد المستلم (المُرسَل إليه)</label>
+                <input type="email" id="toEmail" placeholder="example@gmail.com" required>
+            </div>
+            <div class="input-group">
+                <label>📌 الموضوع</label>
+                <input type="text" id="subject" placeholder="عنوان البريد..." required>
+            </div>
+            <div class="input-group">
+                <label>📝 محتوى الرسالة</label>
+                <textarea id="body" placeholder="اكتب نص الرسالة هنا..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn">
+                <span class="icon-small">🚀</span> افتح Gmail واملأ البيانات
+            </button>
+        </form>
+
+        <div id="infoToast" class="toast-msg">
+            ✅ تم التوجيه إلى Gmail... راجع البيانات ثم اضغط إرسال.
+        </div>
+
+        <div class="note">
+            ⚡ بعد الضغط على الزر، هتفتح صفحة Gmail (أو التطبيق) <strong>جاهزة</strong>.
+            <br> ارسل البريد، ثم ارجع للموقع وكرر العملية بسرعة!
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('emailForm');
+        const toast = document.getElementById('infoToast');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // نمنع الصفحة من إعادة التحميل
+
+            // 1. نجيب القيم
+            const to = document.getElementById('toEmail').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const body = document.getElementById('body').value.trim();
+
+            // 2. التأكد من الحقول
+            if (!to || !subject || !body) {
+                alert('⚠️ من فضلك املأ جميع الحقول!');
+                return;
+            }
+
+            // 3. تحضير الرابط السحري بتاع Gmail
+            // هيكود الحروف عشان المسافات والأحرف الخاصة
+            const encodedSubject = encodeURIComponent(subject);
+            const encodedBody = encodeURIComponent(body);
+
+            // الرابط ده بيشتغل على الموبايل (يفتح Gmail ويب أو التطبيق)
+            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${encodedSubject}&body=${encodedBody}`;
+
+            // 4. نظهر رسالة تأكيد
+            toast.textContent = `✅ تم توجيهك إلى Gmail! تأكد من المستلم: ${to}`;
+            toast.classList.add('show');
+
+            // 5. نفتح الرابط في تبويب جديد (عشان الموقع بتاعنا يفضل مفتوح جنبه)
+            window.open(gmailLink, '_blank');
+
+            // اختياري: نفضي الحقول عشان نجهز للرسالة الجاية (أو خليها مليانة عشان التعديل)
+            // أنا هرجعها فاضية عشان تبدأ من جديد بسرعة
+            // (لو عايزها تفضل مليانة، امسح الـ 3 أسطر الجايين)
+            document.getElementById('toEmail').value = '';
+            document.getElementById('subject').value = '';
+            document.getElementById('body').value = '';
+
+            // إخفاء الرسالة بعد 5 ثواني
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 6000);
+        });
+    </script>
+
+</body>
+</html>
